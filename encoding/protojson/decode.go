@@ -354,6 +354,10 @@ func unmarshalInt(tok json.Token, bitSize int) (protoreflect.Value, bool) {
 		dec := json.NewDecoder([]byte(s))
 		tok, err := dec.Read()
 		if err != nil {
+			n, err := strconv.ParseInt(s, 10, 64)
+			if err == nil {
+				return protoreflect.ValueOfInt64(n), true
+			}
 			return protoreflect.Value{}, false
 		}
 		return getInt(tok, bitSize)
